@@ -25,6 +25,7 @@ import Avatar from "@mui/material/Avatar";
 import { pink } from "@mui/material/colors";
 import Stack from "@mui/material/Stack";
 import AddIcon from '@mui/icons-material/Add';
+import Summary from "./Summary";
 
 const drawerWidth = 240;
 
@@ -132,7 +133,7 @@ function Dashboard() {
         </Drawer>
 
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        
+        <Summary />
         </Box>
 
         <Dialog open={openDialog} onClose={handleCloseDialog} fullWidth maxWidth="md">

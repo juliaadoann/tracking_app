@@ -15,7 +15,7 @@ function CircularProgressWithLabel(props) {
         height: '100vh', // Center vertically within the viewport
       }}
     >
-      <CircularProgress variant="determinate" size={700} thickness={2} {...props} />
+      <CircularProgress variant="determinate" size={300} thickness={2} {...props} />
       <Box
         sx={{
           top: 0,
