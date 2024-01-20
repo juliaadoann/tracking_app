@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
+import apiRequest from './APIRequest';
 
 function Copyright(props) {
   return (
@@ -34,16 +35,24 @@ const defaultTheme = createTheme();
 export default function SignUp() {
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-
-    console.log({
+    const body = {
+      firstName: data.get('firstName'),
+      lastName: data.get('lastName'),
       email: data.get('email'),
       password: data.get('password'),
-    });
+    }
+
+    const response = await apiRequest('signup', 'post', body);
+
     // If signup is successful, navigate to the Dashboard
-    navigate('/dashboard');
+    if (response.success) {
+      navigate('/dashboard');
+    } else {
+      console.error("failed to signup, message: " + response.message);
+    }
   };
 
   return (

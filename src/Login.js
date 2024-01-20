@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
+import apiRequest from './APIRequest';
 
 
 function Copyright(props) {
@@ -33,14 +34,22 @@ const defaultTheme = createTheme();
 export default function Login() {
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const body = {
       email: data.get('email'),
       password: data.get('password'),
-    });
-    navigate('/dashboard');
+    };
+    
+    const response = await apiRequest('login', 'post', body);
+
+    // If login is successful, navigate to the Dashboard
+    if (response.success) {
+      navigate('/dashboard');
+    } else {
+      console.error("failed to login, message: " + response.message);
+    }
   };
 
   return (
