@@ -18,6 +18,7 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import AddTaskIcon from "@mui/icons-material/AddTask";
 import DeleteIcon from "@mui/icons-material/Delete";
+import VerifiedIcon from '@mui/icons-material/Verified';
 import { visuallyHidden } from "@mui/utils";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -33,8 +34,6 @@ function createData(id, name, point) {
     point,
   };
 }
-
-
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -148,7 +147,7 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const { numSelected, onAddClick} = props;
+  const { numSelected, onAddClick, onDeleteClick } = props;
 
   return (
     <Toolbar
@@ -185,6 +184,12 @@ function EnhancedTableToolbar(props) {
       )}
 
       <Tooltip title="Add">
+        <IconButton>
+          <VerifiedIcon />
+        </IconButton>
+      </Tooltip>
+
+      <Tooltip title="Add">
         <IconButton onClick={onAddClick}>
           <AddTaskIcon />
         </IconButton>
@@ -192,7 +197,7 @@ function EnhancedTableToolbar(props) {
 
       <Tooltip title="Delete">
         <IconButton>
-          <DeleteIcon />
+          <DeleteIcon onClick={onDeleteClick} disabled={numSelected === 0} />
         </IconButton>
       </Tooltip>
     </Toolbar>
@@ -202,6 +207,7 @@ function EnhancedTableToolbar(props) {
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
   onAddClick: PropTypes.func.isRequired,
+  onDeleteClick: PropTypes.func.isRequired,
 };
 
 export default function EnhancedTable() {
@@ -247,6 +253,16 @@ export default function EnhancedTable() {
     handleCloseDialog();
   };
 
+  const handleDeleteSelected = () => {
+    // Create a new array that excludes the selected rows
+  const newRows = rows.filter(row => !selected.includes(row.id));
+  
+  // Update the rows state with the new array
+  setRows(newRows);
+  
+  // Clear the selection after deletion
+  setSelected([]);
+  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -320,7 +336,7 @@ export default function EnhancedTable() {
     >
       <Paper sx={{ width: "100%", mb: 2 }}>
 
-      <EnhancedTableToolbar numSelected={selected.length} onAddClick={handleOpenDialog} />
+      <EnhancedTableToolbar numSelected={selected.length} onAddClick={handleOpenDialog} onDeleteClick={handleDeleteSelected} />
 
         <TableContainer>
           <Table
@@ -376,9 +392,6 @@ export default function EnhancedTable() {
               })}
               {emptyRows > 0 && (
                 <TableRow
-                  style={{
-                    height: (dense ? 33 : 53) * emptyRows,
-                  }}
                 >
                   <TableCell colSpan={6} />
                 </TableRow>
