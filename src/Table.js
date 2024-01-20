@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from 'react';
 import PropTypes from "prop-types";
 import { alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -19,6 +19,12 @@ import Tooltip from "@mui/material/Tooltip";
 import AddTaskIcon from "@mui/icons-material/AddTask";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { visuallyHidden } from "@mui/utils";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 
 function createData(id, name, point) {
   return {
@@ -28,21 +34,7 @@ function createData(id, name, point) {
   };
 }
 
-const rows = [
-  createData(1, "As a user, I want to have a distinct username.", 3),
-  createData(2, "As a user, I want to have a distinct username.", 2),
-  createData(3, "As a user, I want to have a distinct username.", 13),
-  createData(4, "As a user, I want to have a distinct username.", 8),
-  createData(5, "As a user, I want to have a distinct username.", 5),
-  createData(6, "As a user, I want to have a distinct username.", 1),
-  createData(7, "As a user, I want to have a distinct username.", 1),
-  createData(8, "As a user, I want to have a distinct username.", 2),
-  createData(9, "As a user, I want to have a distinct username.", 3),
-  createData(10, "As a user, I want to have a distinct username.", 5),
-  createData(11, "As a user, I want to have a distinct username.", 3),
-  createData(12, "As a user, I want to have a distinct username.", 8),
-  createData(13, "As a user, I want to have a distinct username.", 13),
-];
+
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -156,7 +148,7 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const { numSelected } = props;
+  const { numSelected, onAddClick} = props;
 
   return (
     <Toolbar
@@ -193,7 +185,7 @@ function EnhancedTableToolbar(props) {
       )}
 
       <Tooltip title="Add">
-        <IconButton>
+        <IconButton onClick={onAddClick}>
           <AddTaskIcon />
         </IconButton>
       </Tooltip>
@@ -209,6 +201,7 @@ function EnhancedTableToolbar(props) {
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
+  onAddClick: PropTypes.func.isRequired,
 };
 
 export default function EnhancedTable() {
@@ -218,6 +211,42 @@ export default function EnhancedTable() {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [newStory, setNewStory] = useState({ id: '', name: '', point: '' });
+
+  const [rows, setRows] = useState([
+    createData(1, "As a user, I want to have a distinct username.", 3),
+    createData(2, "As a user, I want to have a distinct username.", 2),
+    createData(3, "As a user, I want to have a distinct username.", 13),
+    createData(4, "As a user, I want to have a distinct username.", 8),
+    createData(5, "As a user, I want to have a distinct username.", 5),
+    createData(6, "As a user, I want to have a distinct username.", 1),
+    createData(7, "As a user, I want to have a distinct username.", 1),
+    createData(8, "As a user, I want to have a distinct username.", 2),
+    createData(9, "As a user, I want to have a distinct username.", 3),
+    createData(10, "As a user, I want to have a distinct username.", 5),
+    createData(11, "As a user, I want to have a distinct username.", 3),
+    createData(12, "As a user, I want to have a distinct username.", 8),
+    createData(13, "As a user, I want to have a distinct username.", 13),
+  ]);
+
+  const handleOpenDialog = ()  => {
+    setOpenDialog(true);
+  }
+
+  const handleCloseDialog = ()  => {
+    setOpenDialog(false);
+  }
+
+  const handleInputChange = (e) => {
+    setNewStory({ ...newStory, [e.target.name]: e.target.value });
+  };
+
+  const handleAddStory = () => {
+    setRows([...rows, createData(Number(newStory.id), newStory.name, Number(newStory.point))]);
+    handleCloseDialog();
+  };
+
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -290,7 +319,9 @@ export default function EnhancedTable() {
       }}
     >
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+
+      <EnhancedTableToolbar numSelected={selected.length} onAddClick={handleOpenDialog} />
+
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -365,6 +396,41 @@ export default function EnhancedTable() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Add a New User Story</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            name="id"
+            label="ID"
+            type="number"
+            fullWidth
+            onChange={handleInputChange}
+          />
+          <TextField
+            margin="dense"
+            name="name"
+            label="Description"
+            type="text"
+            fullWidth
+            onChange={handleInputChange}
+          />
+          <TextField
+            margin="dense"
+            name="point"
+            label="Story Points"
+            type="number"
+            fullWidth
+            onChange={handleInputChange}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog}>Cancel</Button>
+          <Button onClick={handleAddStory}>Add</Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
