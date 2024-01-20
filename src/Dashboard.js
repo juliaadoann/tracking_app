@@ -33,7 +33,7 @@ const drawerWidth = 240;
 const projectNames = ["Project 1", "Project 2", "Project 3"];
 
 function Dashboard() {
-  const [projects, setProjects] = useState([]);
+  const [projects, setProjects] = useState(projectNames);
   const [openDialog, setOpenDialog] = useState(false);
   const [newProject, setNewProject] = useState({
     name: ""

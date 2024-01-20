@@ -6,12 +6,12 @@ const Summary = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
       {/* Top half: Table */}
-      <div style={{ flex: 1 }}>
+      <div style={{ marginBottom: '40px'}}>
         <Table />
       </div>
 
       {/* Bottom half: CircularProgress */}
-      <div style={{ flex: 1 }}>
+      <div>
         <CircularWithValueLabel />
       </div>
     </div>

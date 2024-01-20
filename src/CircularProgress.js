@@ -12,7 +12,6 @@ function CircularProgressWithLabel(props) {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        height: '100vh', // Center vertically within the viewport
       }}
     >
       <CircularProgress variant="determinate" size={300} thickness={2} {...props} />
