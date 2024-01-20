@@ -14,6 +14,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import apiRequest from './APIRequest';
+import logo from "./logo.png";
 
 
 function Copyright(props) {
@@ -64,9 +65,15 @@ export default function Login() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
+          
+          <img 
+            src={logo}
+            style={{
+              width: "200px",
+              height: "auto",
+              marginBottom: "20px"
+            }}
+          />
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
