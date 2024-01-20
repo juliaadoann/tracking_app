@@ -24,8 +24,9 @@ import CodeIcon from "@mui/icons-material/Code";
 import AdbIcon from "@mui/icons-material/Adb";
 import CssBaseline from "@mui/material/CssBaseline";
 import Avatar from "@mui/material/Avatar";
-import { pink, blue } from "@mui/material/colors";
+import { pink } from "@mui/material/colors";
 import Stack from "@mui/material/Stack";
+import AddIcon from '@mui/icons-material/Add';
 
 const drawerWidth = 240;
 
@@ -33,9 +34,7 @@ function Dashboard() {
   const [projects, setProjects] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [newProject, setNewProject] = useState({
-    name: "",
-    userStories: "",
-    weight: 0,
+    name: ""
   });
 
   // Hardcoded list of project names
@@ -43,6 +42,7 @@ function Dashboard() {
 
   const handleOpenDialog = () => {
     setOpenDialog(true);
+    setNewProject({ name: "" });
   };
 
   const handleCloseDialog = () => {
@@ -51,7 +51,6 @@ function Dashboard() {
 
   const handleAddProject = () => {
     setProjects([...projects, newProject]);
-    setNewProject({ name: "", userStories: "", weight: 0 });
     handleCloseDialog();
   };
 
@@ -115,15 +114,23 @@ function Dashboard() {
                 </React.Fragment>
               ))}
             </List>
+            
           </Box>
-        </Drawer>
 
-        <Box display="flex" justifyContent="center" p={2}>
-          <Button variant="contained" onClick={handleOpenDialog}>
-            Add
-          </Button>
-          {/* Implement View and Edit buttons as needed */}
-        </Box>
+          <Box flexGrow={1} /> {/* This pushes the button to the bottom */}
+
+            <Box pb={2} px={2}> {/* Padding at the bottom and sides */}
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                startIcon={<AddIcon />}
+                onClick={handleOpenDialog}
+              >
+                Add New Project
+              </Button>
+            </Box>
+        </Drawer>
 
         <Dialog open={openDialog} onClose={handleCloseDialog}>
           <DialogTitle>Add a New Project</DialogTitle>
