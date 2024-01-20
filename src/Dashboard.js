@@ -131,6 +131,10 @@ function Dashboard() {
             </Box>
         </Drawer>
 
+        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        
+        </Box>
+
         <Dialog open={openDialog} onClose={handleCloseDialog} fullWidth maxWidth="md">
           <DialogTitle>Add a New Project</DialogTitle>
           <DialogContent>
