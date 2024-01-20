@@ -14,7 +14,7 @@ function CircularProgressWithLabel(props) {
         alignItems: 'center',
       }}
     >
-      <CircularProgress variant="determinate" size={300} thickness={2} {...props} />
+      <CircularProgress variant="determinate" size={280} thickness={2} {...props} />
       <Box
         sx={{
           top: 0,

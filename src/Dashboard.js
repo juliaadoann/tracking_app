@@ -136,6 +136,7 @@ function Dashboard() {
         <Summary />
         </Box>
 
+        {/* Dialog to add new project */}
         <Dialog open={openDialog} onClose={handleCloseDialog} fullWidth maxWidth="md">
           <DialogTitle>Add a New Project</DialogTitle>
           <DialogContent>
@@ -157,6 +158,50 @@ function Dashboard() {
           </DialogActions>
         </Dialog>
 
+
+        {/* Dialog to add user story */}
+        <Dialog fullWidth maxWidth="md">
+          <DialogTitle>Add a New Project</DialogTitle>
+          <DialogContent>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="Project Name"
+              type="text"
+              fullWidth
+              variant="standard"
+              name="name"
+              value={newProject.name}
+              onChange={handleProjectChange}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseDialog}>Cancel</Button>
+            <Button onClick={handleAddProject}>Add Project</Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* Dialog to delete user story */}
+        <Dialog fullWidth maxWidth="md">
+          <DialogTitle>Add a New Project</DialogTitle>
+          <DialogContent>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="Project Name"
+              type="text"
+              fullWidth
+              variant="standard"
+              name="name"
+              value={newProject.name}
+              onChange={handleProjectChange}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseDialog}>Cancel</Button>
+            <Button onClick={handleAddProject}>Add Project</Button>
+          </DialogActions>
+        </Dialog>
 
       </Box>
     </div>
