@@ -27,14 +27,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
-function createData(id, name, point) {
-  return {
-    id,
-    name,
-    point,
-  };
-}
-
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -211,7 +203,7 @@ EnhancedTableToolbar.propTypes = {
   onCompleteClick: PropTypes.func.isRequired,
 };
 
-export default function EnhancedTable() {
+export default function EnhancedTable({ rows, setRows, createData }) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("");
   const [selected, setSelected] = React.useState([]);
@@ -220,22 +212,6 @@ export default function EnhancedTable() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [openDialog, setOpenDialog] = useState(false);
   const [newStory, setNewStory] = useState({ id: '', name: '', point: '' });
-
-  const [rows, setRows] = useState([
-    createData(1, "As a user, I want to have a distinct username.", 3),
-    createData(2, "As a potential customer, I want to read book reviews so that I can decide which one to buy.", 2),
-    createData(3, "As a user, I want to be able to cancel my reservation at any time.", 13),
-    createData(4, "As a user, I want to view my statement balance.", 8),
-    createData(5, "As a user, I want to hknow all my tasks in advance.", 5),
-    createData(6, "As a user, I want to get a weekly repport of content analytics.", 1),
-    createData(7, "As a user, I want to be able to configure settings so that I an control access.", 1),
-    createData(8, "As a user, I want to see photos of the products.", 2),
-    createData(9, "As a user, I want to reorder a past order.", 3),
-    createData(10, "As a user, I want to be notifiied about new products.", 5),
-    createData(11, "As a user, I want to filter my products by category.", 3),
-    createData(12, "As a user, I want to collect loyalty points.", 8),
-    createData(13, "As a user, I want to redeem loyalty points.", 13),
-  ]);
 
   const handleOpenDialog = ()  => {
     setOpenDialog(true);
@@ -263,6 +239,18 @@ export default function EnhancedTable() {
   
   // Clear the selection after deletion
   setSelected([]);
+  };
+
+  const handleCompleteClick = () => {
+    const newRows = rows.map((row) => {
+      if (selected.includes(row.id)) {
+        return createData(row.id, row.name, row.point, true);
+      } else {
+        return row;
+      }
+    });
+    setRows(newRows);
+    setSelected([]);
   };
 
   const handleRequestSort = (event, property) => {
@@ -344,7 +332,7 @@ export default function EnhancedTable() {
     >
       <Paper sx={{ width: "100%", mb: 2 }}>
 
-      <EnhancedTableToolbar numSelected={selected.length} onAddClick={handleOpenDialog} onDeleteClick={handleDeleteSelected} />
+      <EnhancedTableToolbar numSelected={selected.length} onAddClick={handleOpenDialog} onDeleteClick={handleDeleteSelected} onCompleteClick={handleCompleteClick} />
 
         <TableContainer>
           <Table
@@ -374,7 +362,7 @@ export default function EnhancedTable() {
                     tabIndex={-1}
                     key={row.id}
                     selected={isItemSelected}
-                    sx={{ cursor: "pointer" }}
+                    sx={row.done ? { cursor: "pointer", backgroundColor: "grey" } : { cursor: "pointer" }}
                   >
                     <TableCell padding="checkbox">
                       <Checkbox

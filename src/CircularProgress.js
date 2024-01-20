@@ -28,7 +28,7 @@ function CircularProgressWithLabel(props) {
         }}
       >
         <Typography variant="h1" component="div" color="text.secondary">
-          {`${Math.round(props.value)}%`}
+          {props.value}%
         </Typography>
       </Box>
     </Box>
@@ -39,26 +39,33 @@ CircularProgressWithLabel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-export default function CircularWithValueLabel() {
-    const [progress, setProgress] = React.useState(10);
+export default function CircularWithValueLabel({ rows }) {
+    const [progress, setProgress] = React.useState(0);
+
+    function countPointsCompleted() {
+      let points = 0;
+      for (const row of rows) {
+        if (row.done) {
+          points += row.point;
+        }
+      }
+      return points;
+    }
+
+    function countTotalPoints() {
+      let points = 0;
+      for (const row of rows) {
+        points += row.point;
+      }
+      return points;
+    }
   
     React.useEffect(() => {
-      const timer = setInterval(() => {
-        setProgress((prevProgress) => {
-          // Check if progress is 100 or more
-          if (prevProgress >= 100) {
-            clearInterval(timer); // Stop the interval
-            return 100; // Set progress to 100 and keep it there
-          } else {
-            return prevProgress + 10; // Otherwise, continue incrementing
-          }
-        });
-      }, 800);
-  
-      return () => {
-        clearInterval(timer); // Clear interval on component unmount
-      };
-    }, []);
+      const completedPoints = countPointsCompleted();
+      const totalPoints = countTotalPoints();
+      const percentage = completedPoints / totalPoints;
+      setProgress(percentage.toFixed(2) * 100);
+    }, [JSON.stringify(rows)]);
   
     return <CircularProgressWithLabel value={progress} />;
   }

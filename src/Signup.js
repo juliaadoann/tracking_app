@@ -49,7 +49,7 @@ export default function SignUp() {
 
     // If signup is successful, navigate to the Dashboard
     if (response.success) {
-      navigate('/login');
+      navigate('/dashboard');
     } else {
       console.error("failed to signup, message: " + response.message);
     }

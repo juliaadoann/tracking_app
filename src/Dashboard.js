@@ -30,7 +30,7 @@ import Summary from "./Summary";
 const drawerWidth = 240;
 
 // Hardcoded list of project names
-const projectNames = ["Project 1", "Project 2", "Project 3"];
+const projectNames = ["Project 1"];
 
 function Dashboard() {
   const [projects, setProjects] = useState(projectNames);
@@ -93,7 +93,7 @@ function Dashboard() {
               <Avatar sx={{ bgcolor: pink[400] }}>J</Avatar>
               {/* Name of the account */}
               <Typography variant="h6" align="right">
-                John Doe
+                Julia D
               </Typography>
             </Stack>
             <Divider />
