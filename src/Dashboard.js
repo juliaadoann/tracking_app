@@ -10,8 +10,6 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
-  Checkbox,
-  FormControlLabel,
 } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
@@ -30,15 +28,15 @@ import AddIcon from '@mui/icons-material/Add';
 
 const drawerWidth = 240;
 
+// Hardcoded list of project names
+const projectNames = ["Project 1", "Project 2", "Project 3"];
+
 function Dashboard() {
   const [projects, setProjects] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [newProject, setNewProject] = useState({
     name: ""
   });
-
-  // Hardcoded list of project names
-  const projectNames = ["Project 1", "Project 2", "Project 3"];
 
   const handleOpenDialog = () => {
     setOpenDialog(true);
@@ -50,8 +48,9 @@ function Dashboard() {
   };
 
   const handleAddProject = () => {
-    setProjects([...projects, newProject]);
-    handleCloseDialog();
+    const updatedProjects = [...projectNames, newProject.name];
+  setProjects(updatedProjects);
+  handleCloseDialog();
   };
 
   const handleProjectChange = (e) => {
@@ -100,7 +99,7 @@ function Dashboard() {
 
             {/* List of projects */}
             <List>
-              {projectNames.map((text, index) => (
+              {projects.map((text, index) => (
                 <React.Fragment key={text}>
                   <ListItem disablePadding>
                     <ListItemButton>
@@ -132,7 +131,7 @@ function Dashboard() {
             </Box>
         </Drawer>
 
-        <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <Dialog open={openDialog} onClose={handleCloseDialog} fullWidth maxWidth="md">
           <DialogTitle>Add a New Project</DialogTitle>
           <DialogContent>
             <TextField
@@ -146,28 +145,6 @@ function Dashboard() {
               value={newProject.name}
               onChange={handleProjectChange}
             />
-            <TextField
-              margin="dense"
-              label="User Stories"
-              type="text"
-              fullWidth
-              multiline
-              rows={4}
-              variant="standard"
-              name="userStories"
-              value={newProject.userStories}
-              onChange={handleProjectChange}
-            />
-            <TextField
-              margin="dense"
-              label="Weight (%)"
-              type="number"
-              fullWidth
-              variant="standard"
-              name="weight"
-              value={newProject.weight}
-              onChange={handleProjectChange}
-            />
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseDialog}>Cancel</Button>
@@ -175,21 +152,7 @@ function Dashboard() {
           </DialogActions>
         </Dialog>
 
-        <Box>
-          {projects.map((project, index) => (
-            <Box key={index} m={2} p={2} border={1}>
-              <Typography variant="h6">{project.name}</Typography>
-              <Typography>User Stories:</Typography>
-              {project.userStories.split("\n").map((story, idx) => (
-                <FormControlLabel
-                  key={idx}
-                  control={<Checkbox />}
-                  label={`${story} (Weight: ${project.weight}%)`}
-                />
-              ))}
-            </Box>
-          ))}
-        </Box>
+
       </Box>
     </div>
   );
